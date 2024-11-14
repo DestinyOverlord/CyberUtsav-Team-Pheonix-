@@ -5,122 +5,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        body{
-            background-color: wheat;
-font-family: Arial, Helvetica, sans-serif;
-margin: 20px auto;
-max-width: 600px;
-padding: 20px;
-}
-.quiz-start{
-    background-color: blueviolet;
-    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.4);
-    padding: 10px;
-    border-radius: 5px;
-    
-}
-
-#nextbutton{
-    background-color: blue;
-color: white;
-width: 100%;
-padding: 5px;
-display: block;
-border-radius: 5px;
-margin-top: 20px ;
-cursor: pointer;
-
-
-
-}
-
-
-#nextbutton.disabled{
-    background-color: gray;
-    cursor: not-allowed;
-}
-#nextbutton.start:hover{
-    opacity: 0.7;
-}
-.scoreboard{
-   text-align: center;
-   font-size: 20;
-   margin-top: 20px; 
-}
+        body {
+            background-color: rgb(80, 80, 202);
+            max-width: 600px;
+            margin: 20px auto;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 20px;
+        }
+        .quiz-container {
+            background-color: rgb(47, 38, 110);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .option {
+            display: block;
+            margin: 10px;
+            padding: 15px;
+            color: white;
+            background-color: rgb(80, 80, 202);
+            border: 1px solid rgb(187, 192, 187);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .option:hover {
+            opacity: 0.5;
+        }
+        .option.selected {
+            border-color: blue;
+            background-color: rgb(179, 255, 255);
+        }
+        #nextBtn {
+            background-color: rgb(24, 163, 163);
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            font-size: 18px;
+            border: none;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        #nextBtn:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+        .score-container {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: white;
+        }
     </style>
 </head>
+
 <body>
-    <div class="quiz-start">
+    <div class="quiz-container">
         <h2 id="question"></h2>
         <div id="options"></div>
-        <button id="nextbutton">Click Here</button>
-    </div> 
-<div class="scoreboard">
-    Score:<span id="score ">0</span> / <span id="total">0</span>
-</div>
-<!-- <button id="resetgame" display >Reset Game</button> -->
+        <button id="nextBtn" disabled>Next Question</button>
+        <button id="restartBtn" style="display: none;">Restart Quiz</button>
+    </div>
+    <div class="score-container">
+        Score: <span id="score">0</span> / <span id="total">0</span>
+    </div>
 
+    <!-- Sound effect for Next Question button -->
+    <audio id="next-sound" src="locked.mp3"></audio>
 
+    <script>
+        const questions = [
+            {
+                
+question:"what is the capital city of nepal?",
+  option:[ "1.kathmandu", "2.sindhupalchok" ,"3.biratnagar", "4.dhangadhi"],
+  correct:0,},
+  {question:"who won the FIFA world cup 2024 ?",
+  option:["1. Argentina", "2. france","3. russia","4. portugal"],
+  correct:0,},
+  {question:" who won t20 cricket world cup 2024  ?",
+  option:[ "1. india ","2. south africa", "3. nepal", "4. pakistan"] ,
+  correct:0,},
+  {question:" who is the author of ythe book muna madan ?",
+  option:[ "1. jhamak kumari ghimire ","2.laxmi prasad devkota ","3. bhanu bhakta acharya", "4. utkrista stha"] ,
+  correct:1,},
+  {question:"what does CPU stand for ?",
+  option:["1.central per unit","2.celntral progess unit", "3.call progess unit","4.central processing unit"],
+  correct:3,},
+  {question:"who is known as the lady with the lamp ?",
+  option: ["1.lady augusta ada","2. gautam buddha ","3. narendra modi", "4. florence nightingale"],
+  correct:3,}, 
+  {question: "when was the first world war began ?",
+  option:["1.june 19 1814", "2.july 28 1914", "3. january 12 1914", "4.november 21 1914"],
+  correct:1,},
+  {question: "what is the smallest prime number ?",
+  option:["1.1", "2.2", "3. 3", "4. 5"],
+  correct:1,} ,
+  {question:"which planet is known as red planet ?",
+  option:["1.mercury","2.venus","3.earth","4.mars"],
+  correct:3,} , 
+  {question:"who is the father of history ?",
+  option:["1.charles babbage ","2.herodotus","3.michael faraday","4.sanduk ruit"],
+  correct:1,},
+  {question:"who wrote the novel 'PRIDE AND PREJUDICE'?",
+  option:["1.emily bronte","2.charles dickens","3.jane austen","4.mark twain"],
+  correct:2,},
+  {question:"what is the chemical symbol for water ?",
+  option:[ "1.h20","2.o2","3.co2","4.h2"],
+  correct:0,},
+  {question:"in which year did world war II end ?",
+  option:["1.1942","2.1945","3.1948","4.1950"],
+  correct:1,},
+  {question:"who discovered gravity?",
+  option:["1.albert einstin","2.galileo galilei ","3.isaac newton","4.nikola teesla "],
+  correct:2,},
+  {question:"which continent is known as dark continent ?",
+  option:["1.africa","2.asia","3.europe","4.north america"],
+  correct:0,},
+  {question:"what is the boiling point of water in sea level ?",
+  option:["1.50&deg;C","2.100&deg;C","3.150&deg;C","4.200&deg;C"],
+  correct:1,},
+  {question:"who painted the ' MONA LISA'?",
+  option:["1.pablo picasso","2.michelalangelo","3.da vinci","4.van gogh "],
+  correct:2,},
+  {question:"what is the largest mammal in the world ? ",
+  option:["1.elephant","2. blue whale ","3.giraffe ","4.shark"],
+  correct:1,},
+  {question:"which planet has the most moons ?",
+  option:["1.earth","2.mars","3.jupiter","4.saturn"],
+  correct:3,},
+  {question:"which element has atomic number 1 ?",
+  option:["1.helium","2.oxygen","3.hydrogen","4.nitrogen"],
+  correct:2,},
+  {question:"which is the largest river in the world ?",
+  option:["1.amazon","2.nile","3.mississippi","4.yangtze"],
+  correct:2}    ,        
+        ];
 
-<script>
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
 
-let currentQuestion = 0;
-let score = 0;
-let selectedoption = 0;
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const nextbutton = document.getElementById("nextBtn");
+        const restartbutton = document.getElementById("restartBtn");
+        const scoreElement = document.getElementById("score");
+        const totalElement = document.getElementById("total");
+        const nextSound = document.getElementById("next-sound");
 
-const questions = [
-{
-        question : "juhytf", 
-        options : [
-            "ugvhnmk","ygvhk","jhgfxdf"
-        ],
-        correct: 0,
-    },
-    {
-        question : "juhytf", 
-        options : [
-            "ugvhnmk","ygvhk","jhgfxdf"
-        ],
-        correct: 0,
-    },
-    {
-        correct: 0,
-    }
-]
+        totalElement.textContent = questions.length;
 
-const questionElement = document.getElementById("question")
-const  optionsElement= document.getElementById("options")
-const  nextbutton= document.getElementById("nextbutton")
-const  scoreElement = document.getElementById("score")
-const  totalElement= document.getElementById("total")
+        function display() {
+            const current = questions[currentQuestion];
+            questionElement.textContent = current.question;
 
-totalElement.textContent = questions.length;
+            optionsElement.innerHTML = "";
 
-function display(){
-    const current = questions[currentQuestion];
-    questionElement.textContent = current.question;
+            current.options.forEach((option, index) => {
+                const optionDiv = document.createElement("div");
+                optionDiv.className = "option";
+                optionDiv.textContent = option;
 
-optionsElement.innerHTML = "";
+                optionDiv.onclick = () => selectOption(index, optionDiv);
 
-current.options.forEach((option, index) => {
-    const optionDiv = document.createElement("div");
-    optiondiv.className = "option";
-    optionDiv.textContent = option;
+                optionsElement.appendChild(optionDiv);
+            });
 
-    optionDiv.onclick=()=> selectoption(index, optionDiv);
-optionsElement.appendChild(optionDiv);
-});
+            nextbutton.disabled = true;
+            selectedOption = null;
+        }
 
-nextbutton.disabled = true;
-selectedoption =null;
-}
-function selectoption(index, element){
-const options=document.querySelectorAll(".option");
+        function selectOption(index, element) {
+            const options = document.querySelectorAll(".option");
+            options.forEach((option) => option.classList.remove("selected"));
 
-}
+            element.classList.add("selected");
 
-display();
-</script>
+            nextbutton.disabled = false;
+            selectedOption = index;
+        }
 
+        
+
+        display();
+    </script>
 </body>
 </html>
