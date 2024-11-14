@@ -44,19 +44,9 @@
 
     <div class="quiz-container">
         <h1>Welcome to KBC</h1>
-        <button class="nextBtn" onclick="playAudio()"><a href="firstpg.html">Yes</a></button>
+        <button class="nextBtn" onclick="window.location.href='catagoy.html'">Go to catagories</button>
     </div>
-    <audio id="theme-audio" src="theme.mp3"></audio>
 
-    <script>
-        function playAudioAndNavigate() {
-            var audio = document.getElementById("theme-audio");
-            audio.play();
-            
-            setTimeout(function() {
-                window.location.href = "firstpg.html";
-            }, 200); 
-        }
-    </script>
+    
 </body>
 </html>

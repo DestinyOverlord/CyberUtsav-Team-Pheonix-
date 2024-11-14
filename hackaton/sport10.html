@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        body {
+            background-color: rgb(80, 80, 202);
+            max-width: 600px;
+            margin: 20px auto;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 20px;
+        }
+        .quiz-container {
+            color: white;
+            background-color: rgb(47, 38, 110);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .option {
+            color: white;
+            display: block;
+            margin: 10px;
+            padding: 15px;
+            color: black;
+            background-color: rgb(80, 80, 202);
+            border: 1px solid rgb(187, 192, 187);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s, background-color 0.3s;
+        }
+        .option:hover {
+            opacity: 0.5;
+        }
+        .option.correct {
+            background-color: green;
+            color: white;
+        }
+        .option.incorrect {
+            background-color: red;
+            color: white;
+        }
+        #nextBtn {
+            background-color: rgb(24, 163, 163);
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            padding: 10px;
+            display: block;
+            font-size: 18px;
+            border: none;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        #nextBtn:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+        .score-container {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h2 id="question"></h2>
+        <div id="options"></div>
+        <button id="nextBtn" disabled>Next Question</button>
+        <button id="restartBtn" style="display: none;">Restart Quiz</button>
+    </div>
+    <div class="score-container">
+        Score: <span id="score">0</span> / <span id="total">0</span>
+    </div>
+
+
+    <audio id="next-sound" src="theme.mp3"></audio>
+
+    <script>
+        const 
+        
+                
+            questions = [
+    
+
+
+    
+    {
+        question: "How many players are on the field for each team in a standard game of soccer?",
+        options: ["A) 9", "B) 10", "C) 11", "D) 12"],
+        correct: 2
+    },
+    {
+        question: "Which golf tournament is known as the 'Green Jacket' tournament?",
+        options: ["A) The British Open", "B) The Masters", "C) The PGA Championship", "D) The U.S. Open"],
+        correct: 1
+    },
+    {
+        question: "Which team won the NBA Championship in 2020?",
+        options: ["A) Golden State Warriors", "B) Miami Heat", "C) Los Angeles Lakers", "D) Milwaukee Bucks"],
+        correct: 2
+    },
+    {
+        question: "In cricket, how many runs are awarded for hitting the ball over the boundary without bouncing?",
+        options: ["A) 4", "B) 5", "C) 6", "D) 7"],
+        correct: 2
+    },
+    {
+        question: "What is the maximum score possible in a single frame of bowling?",
+        options: ["A) 200", "B) 250", "C) 275", "D) 300"],
+        correct: 3
+    },
+    {
+    question: "What is the national sport of Nepal?",
+    options: ["Football", "Cricket", "Volleyball", "Kabaddi"],
+    correct: 3,
+  },
+  {
+    question: "Who is the first Nepali cricketer to play in an international match?",
+    options: ["Paras Khadka", "Shakti Gauchan", "Binod Das", "Mahesh Chhetri"],
+    correct: 2,
+  },
+  {
+    question: "In which year did Nepal win the South Asian Games football gold medal?",
+    options: ["2014", "1999", "2016", "1995"],
+    correct: 1,
+  },
+  {
+    question: "Which Nepali athlete has won a medal in the Olympics?",
+    options: ["Gaurika Singh", "Baikuntha Manandhar", "Dhanraj Bhagat", "Manoj Kumar"],
+    correct: 0,
+  },
+  {
+    question: "Which sport is most popular in Nepal?",
+    options: ["Football", "Basketball", "Cricket", "Badminton"],
+    correct: 0,
+  }
+];
+
+        
+
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const nextButton = document.getElementById("nextBtn");
+        const restartButton = document.getElementById("restartBtn");
+        const scoreElement = document.getElementById("score");
+        const totalElement = document.getElementById("total");
+        const nextSound = document.getElementById("next-sound");
+
+        totalElement.textContent = questions.length;
+
+        function display() {
+            const current = questions[currentQuestion];
+            questionElement.textContent = current.question;
+
+            optionsElement.innerHTML = "";
+
+            current.options.forEach((option, index) => {
+                const optionDiv = document.createElement("div");
+                optionDiv.className = "option";
+                optionDiv.textContent = option;
+
+                optionDiv.onclick = () => selectOption(index, optionDiv);
+
+                optionsElement.appendChild(optionDiv);
+            });
+
+            nextButton.disabled = true;
+            selectedOption = null;
+        }
+
+        function selectOption(index, element) {
+            const options = document.querySelectorAll(".option");
+
+            options.forEach((option) => option.onclick = null);
+
+            if (index === questions[currentQuestion].correct) {
+                element.classList.add("correct");
+                score++;
+                scoreElement.textContent = score;
+            } else {
+                element.classList.add("incorrect");
+
+                options[questions[currentQuestion].correct].classList.add("correct");
+            }
+
+            nextButton.disabled = false;
+        }
+
+        nextButton.onclick = () => {
+            nextSound.currentTime = 0; 
+            nextSound.play();
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                display();
+            } else {
+                endQuiz();
+            }
+        };
+
+        function endQuiz() {
+            questionElement.textContent = "Quiz Finished";
+            optionsElement.innerHTML = `Final score: ${score} out of ${questions.length}`;
+            nextButton.style.display = "none";
+            restartButton.style.display = "block";
+        }
+
+        restartButton.onclick = () => {
+            resetQuiz();
+        };
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            scoreElement.textContent = score;
+            nextButton.style.display = "block";
+            restartButton.style.display = "none";
+            display();
+        }
+
+        display();
+    </script>
+</body>
+</html>
