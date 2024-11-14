@@ -88,84 +88,38 @@
     </div>
 
     <audio id="next-sound" src="theme.mp3"></audio>
+    <audio id="right-sound" src="correct.mp3"></audio>
+    <audio id="wrong-sound" src="wrong-as.mp3"></audio>
 
     <script>
         const questions = [
         {
-        question: "What is the primary gas responsible for climate change?",
-        options: ["A) Oxygen", "B) Carbon Dioxide", "C) Nitrogen", "D) Methane"],
-        correct: 1
-    },
-    {
-        question: "Which element is the most abundant in the Earth's crust?",
-        options: ["A) Silicon", "B) Oxygen", "C) Carbon", "D) Iron"],
-        correct: 1
-    },
-    {
-        question: "Who is known as the father of modern physics?",
-        options: ["A) Isaac Newton", "B) Albert Einstein", "C) Nikola Tesla", "D) Galileo Galilei"],
-        correct: 1
-    },
-    {
-        question: "What does the acronym 'DNA' stand for?",
-        options: ["A) Deoxyribonucleic Acid", "B) Deoxyribose Nucleic Acid", "C) Dynamic Nucleotide Arrangement", "D) Dual Nucleic Acid"],
-        correct: 0
-    },
-    {
-        question: "Which planet is known as the 'Red Planet'?",
-        options: ["A) Venus", "B) Mars", "C) Jupiter", "D) Saturn"],
-        correct: 1
-    },
-    {
-        question: "What is the most widely used programming language for web development?",
-        options: ["A) Python", "B) Java", "C) JavaScript", "D) C++"],
-        correct: 2
-    },
-    {
-        question: "In which field is the Nobel Prize awarded in the category of 'Peace'?",
-        options: ["A) Literature", "B) Physics", "C) Medicine", "D) Efforts to promote peace"],
-        correct: 3
-    },
-    {
-        question: "Which of the following is the most powerful supercomputer in the world as of 2024?",
-        options: ["A) Fugaku", "B) Summit", "C) Tianhe-2A", "D) LUMI"],
-        correct: 0
-    },
-    {
-        question: "Which technology is used to make wireless communication between devices?",
-        options: ["A) Bluetooth", "B) Wi-Fi", "C) NFC", "D) All of the above"],
-        correct: 3
-    },
-    {
-        question: "What is the name of the first artificial satellite launched by humans?",
-        options: ["A) Hubble", "B) Sputnik 1", "C) Apollo 11", "D) Voyager 1"],
-        correct: 1
-    },
-    {
-    question: "Who is known as the father of modern physics?",
-    options: ["Isaac Newton", "Albert Einstein", "Nikola Tesla", "Marie Curie"],
-    answer: "Albert Einstein"
-  },
-  {
-    question: "What does the abbreviation 'HTML' stand for?",
-    options: ["HyperText Markup Language", "Hyper Transfer Markup Language", "HighText Machine Language", "HyperTextual Markup Language"],
-    answer: "HyperText Markup Language"
-  },
-  {
-    question: "Which planet is known as the 'Red Planet'?",
-    options: ["Earth", "Mars", "Venus", "Jupiter"],
-    answer: "Mars"
-  },
-  {
-    question: "What is the most common programming language used for web development?",
-    options: ["Python", "JavaScript", "C++", "Java"],
-    answer: "JavaScript"
-  },
-  {
-    question: "Who invented the World Wide Web?",
-    options: ["Tim Berners-Lee", "Bill Gates", "Mark Zuckerberg", "Larry Page"],
-    answer: "Tim Berners-Lee"
-  }
+                question: "Which ancient civilization is known for building the pyramids?",
+                options: ["1. Mesopotamia", "2. Egypt", "3. Greece", "4. Rome"],
+                correct: 1
+            },
+            {
+                question: "Who was the first President of the United States?",
+                options: ["1. Abraham Lincoln", "2. Thomas Jefferson", "3. George Washington", "4. John Adams"],
+                correct: 2
+            },
+            {
+                question: "The Renaissance began in which country?",
+                options: ["1. France", "2. England", "3. Italy", "4. Germany"],
+                correct: 2
+            },
+            {
+                question: "What event marked the beginning of World War II?",
+                options: ["1. The bombing of Pearl Harbor", "2. The invasion of Poland by Germany", "3. The assassination of Archduke Franz Ferdinand", "4. The signing of the Treaty of Versailles"],
+                correct: 1
+            },
+            {
+                question: "Who was the leader of the Soviet Union during World War II?",
+                options: ["1. Vladimir Lenin", "2. Joseph Stalin", "3. Nikita Khrushchev", "4. Mikhail Gorbachev"],
+                correct: 1
+            },
+            
+    
         ];
 
         let currentQuestion = 0;
@@ -230,9 +184,14 @@
         function selectOption(index, element) {
             const options = document.querySelectorAll(".option");
 
+
+
+
+
             options.forEach((option) => option.onclick = null);
 
             if (index === questions[currentQuestion].correct) {
+                
                 element.classList.add("correct");
                 score++;
                 scoreElement.textContent = score;

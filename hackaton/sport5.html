@@ -18,6 +18,15 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .timer {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
         }
         .option {
             color: white;
@@ -68,6 +77,7 @@
 </head>
 <body>
     <div class="quiz-container">
+        <div class="timer" id="timer">30s</div>
         <h2 id="question"></h2>
         <div id="options"></div>
         <button id="nextBtn" disabled>Next Question</button>
@@ -77,18 +87,11 @@
         Score: <span id="score">0</span> / <span id="total">0</span>
     </div>
 
-
     <audio id="next-sound" src="theme.mp3"></audio>
 
     <script>
-        const 
-        
-                
-            questions = [
-    
-
-
-    {
+        const questions = [
+        {
         question: "Which country has won the most FIFA World Cup titles in men's soccer?",
         options: ["A) Argentina", "B) Brazil", "C) Germany", "D) Italy"],
         correct: 1
@@ -114,13 +117,13 @@
         correct: 2
     },
     
-];
-
-        
+        ];
 
         let currentQuestion = 0;
         let score = 0;
         let selectedOption = null;
+        let timerInterval;
+        let timeLeft = 30;
 
         const questionElement = document.getElementById("question");
         const optionsElement = document.getElementById("options");
@@ -128,6 +131,7 @@
         const restartButton = document.getElementById("restartBtn");
         const scoreElement = document.getElementById("score");
         const totalElement = document.getElementById("total");
+        const timerElement = document.getElementById("timer");
         const nextSound = document.getElementById("next-sound");
 
         totalElement.textContent = questions.length;
@@ -137,6 +141,7 @@
             questionElement.textContent = current.question;
 
             optionsElement.innerHTML = "";
+            resetTimer();
 
             current.options.forEach((option, index) => {
                 const optionDiv = document.createElement("div");
@@ -150,6 +155,27 @@
 
             nextButton.disabled = true;
             selectedOption = null;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 30;
+            timerElement.textContent = timeLeft + 's';
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft + 's';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        function timeUp() {
+            nextButton.disabled = false;
+            nextQuestion();
         }
 
         function selectOption(index, element) {
@@ -167,11 +193,12 @@
                 options[questions[currentQuestion].correct].classList.add("correct");
             }
 
+            clearInterval(timerInterval);
             nextButton.disabled = false;
         }
 
-        nextButton.onclick = () => {
-            nextSound.currentTime = 0; 
+        function nextQuestion() {
+            nextSound.currentTime = 0;
             nextSound.play();
 
             currentQuestion++;
@@ -180,6 +207,10 @@
             } else {
                 endQuiz();
             }
+        }
+
+        nextButton.onclick = () => {
+            nextQuestion();
         };
 
         function endQuiz() {
@@ -187,6 +218,7 @@
             optionsElement.innerHTML = `Final score: ${score} out of ${questions.length}`;
             nextButton.style.display = "none";
             restartButton.style.display = "block";
+            clearInterval(timerInterval);
         }
 
         restartButton.onclick = () => {

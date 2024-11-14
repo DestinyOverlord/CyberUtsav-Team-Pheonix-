@@ -18,6 +18,15 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .timer {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
         }
         .option {
             color: white;
@@ -68,6 +77,7 @@
 </head>
 <body>
     <div class="quiz-container">
+        <div class="timer" id="timer">30s</div>
         <h2 id="question"></h2>
         <div id="options"></div>
         <button id="nextBtn" disabled>Next Question</button>
@@ -77,18 +87,35 @@
         Score: <span id="score">0</span> / <span id="total">0</span>
     </div>
 
-
     <audio id="next-sound" src="theme.mp3"></audio>
 
     <script>
-        const 
-        
-                
-            questions = [
-    
-
-
-    
+        const questions = [
+        {
+        question: "Which country has won the most FIFA World Cup titles in men's soccer?",
+        options: ["A) Argentina", "B) Brazil", "C) Germany", "D) Italy"],
+        correct: 1
+    },
+    {
+        question: "Who holds the record for the most Grand Slam titles in men’s tennis (as of 2023)?",
+        options: ["A) Rafael Nadal", "B) Novak Djokovic", "C) Roger Federer", "D) Pete Sampras"],
+        correct: 1
+    },
+    {
+        question: "Which player is known as 'The King of Basketball'?",
+        options: ["A) Michael Jordan", "B) LeBron James", "C) Kobe Bryant", "D) Larry Bird"],
+        correct: 0
+    },
+    {
+        question: "In which sport would you perform a 'slam dunk'?",
+        options: ["A) Tennis", "B) Basketball", "C) Volleyball", "D) Football"],
+        correct: 1
+    },
+    {
+        question: "Which country hosted the first modern Olympic Games in 1896?",
+        options: ["A) France", "B) Italy", "C) Greece", "D) United Kingdom"],
+        correct: 2
+    },
     {
         question: "How many players are on the field for each team in a standard game of soccer?",
         options: ["A) 9", "B) 10", "C) 11", "D) 12"],
@@ -114,38 +141,14 @@
         options: ["A) 200", "B) 250", "C) 275", "D) 300"],
         correct: 3
     },
-    {
-    question: "What is the national sport of Nepal?",
-    options: ["Football", "Cricket", "Volleyball", "Kabaddi"],
-    correct: 3,
-  },
-  {
-    question: "Who is the first Nepali cricketer to play in an international match?",
-    options: ["Paras Khadka", "Shakti Gauchan", "Binod Das", "Mahesh Chhetri"],
-    correct: 2,
-  },
-  {
-    question: "In which year did Nepal win the South Asian Games football gold medal?",
-    options: ["2014", "1999", "2016", "1995"],
-    correct: 1,
-  },
-  {
-    question: "Which Nepali athlete has won a medal in the Olympics?",
-    options: ["Gaurika Singh", "Baikuntha Manandhar", "Dhanraj Bhagat", "Manoj Kumar"],
-    correct: 0,
-  },
-  {
-    question: "Which sport is most popular in Nepal?",
-    options: ["Football", "Basketball", "Cricket", "Badminton"],
-    correct: 0,
-  }
-];
-
-        
+    
+        ];
 
         let currentQuestion = 0;
         let score = 0;
         let selectedOption = null;
+        let timerInterval;
+        let timeLeft = 30;
 
         const questionElement = document.getElementById("question");
         const optionsElement = document.getElementById("options");
@@ -153,6 +156,7 @@
         const restartButton = document.getElementById("restartBtn");
         const scoreElement = document.getElementById("score");
         const totalElement = document.getElementById("total");
+        const timerElement = document.getElementById("timer");
         const nextSound = document.getElementById("next-sound");
 
         totalElement.textContent = questions.length;
@@ -162,6 +166,7 @@
             questionElement.textContent = current.question;
 
             optionsElement.innerHTML = "";
+            resetTimer();
 
             current.options.forEach((option, index) => {
                 const optionDiv = document.createElement("div");
@@ -175,6 +180,27 @@
 
             nextButton.disabled = true;
             selectedOption = null;
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 30;
+            timerElement.textContent = timeLeft + 's';
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft + 's';
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        function timeUp() {
+            nextButton.disabled = false;
+            nextQuestion();
         }
 
         function selectOption(index, element) {
@@ -192,11 +218,12 @@
                 options[questions[currentQuestion].correct].classList.add("correct");
             }
 
+            clearInterval(timerInterval);
             nextButton.disabled = false;
         }
 
-        nextButton.onclick = () => {
-            nextSound.currentTime = 0; 
+        function nextQuestion() {
+            nextSound.currentTime = 0;
             nextSound.play();
 
             currentQuestion++;
@@ -205,6 +232,10 @@
             } else {
                 endQuiz();
             }
+        }
+
+        nextButton.onclick = () => {
+            nextQuestion();
         };
 
         function endQuiz() {
@@ -212,6 +243,7 @@
             optionsElement.innerHTML = `Final score: ${score} out of ${questions.length}`;
             nextButton.style.display = "none";
             restartButton.style.display = "block";
+            clearInterval(timerInterval);
         }
 
         restartButton.onclick = () => {
