@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #blinking-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        #blinking-button:disabled {
+            background-color: #a5a5a5;
+            cursor: not-allowed;
+        }
+
+        .blinking {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <button id="blinking-button">Click Me!</button>
+
+    <!-- Button click sound -->
+    <audio id="button-sound" src="locked.mp3"></audio>
+    
+    <!-- Delayed sound -->
+    <audio id="delayed-sound" src="theme.mp3"></audio>
+    
+    <script>
+        const button = document.getElementById("blinking-button");
+        const audiobutton = document.getElementById("button-sound");
+        const delayedSound = document.getElementById("delayed-sound");
+
+        button.addEventListener("click", () => {
+            // Disable the button to prevent multiple clicks
+            button.disabled = true;
+
+            // Start the blinking effect
+            button.classList.add("blinking");
+
+            // Play the button click sound
+            audiobutton.currentTime = 0;
+            audiobutton.play();
+
+            // Stop the blinking effect after 5 seconds and play delayed sound
+            setTimeout(() => {
+                button.classList.remove("blinking");
+
+                // Play the delayed sound
+                delayedSound.currentTime = 0;
+                delayedSound.play();
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

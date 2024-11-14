@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Welcome to KBC</title>
     <style>
         body {
             background-color: rgb(80, 80, 202);
@@ -20,7 +20,7 @@
             text-align: center;
             color: white;
         }
-        #nextBtn {
+        .nextBtn {
             background-color: rgb(24, 163, 163);
             color: white;
             width: 100%;
@@ -31,12 +31,32 @@
             border: none;
             margin-top: 20px;
             border-radius: 4px;
+            transition: background-color 0.3s ease, opacity 1s ease;
+            text-decoration: none;
         }
-        </style>
+        .nextBtn:hover {
+            background-color: rgb(18, 130, 130);
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
+
     <div class="quiz-container">
-        <h1><b>Welcome to KBC</b></h1>
+        <h1>Welcome to KBC</h1>
+        <button class="nextBtn" onclick="playAudio()"><a href="firstpg.html">Yes</a></button>
     </div>
+    <audio id="theme-audio" src="theme.mp3"></audio>
+
+    <script>
+        function playAudioAndNavigate() {
+            var audio = document.getElementById("theme-audio");
+            audio.play();
+            
+            setTimeout(function() {
+                window.location.href = "firstpg.html";
+            }, 200); 
+        }
+    </script>
 </body>
 </html>
