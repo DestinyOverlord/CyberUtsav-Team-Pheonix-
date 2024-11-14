@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quiz App</title>
     <style>
         body {
             background-color: rgb(80, 80, 202);
@@ -22,19 +22,23 @@
             display: block;
             margin: 10px;
             padding: 15px;
-            color: white;
+            color: black;
             background-color: rgb(80, 80, 202);
             border: 1px solid rgb(187, 192, 187);
             border-radius: 5px;
             cursor: pointer;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s, background-color 0.3s;
         }
         .option:hover {
             opacity: 0.5;
         }
-        .option.selected {
-            border-color: blue;
-            background-color: rgb(179, 255, 255);
+        .option.correct {
+            background-color: green;
+            color: white;
+        }
+        .option.incorrect {
+            background-color: red;
+            color: white;
         }
         #nextBtn {
             background-color: rgb(24, 163, 163);
@@ -60,7 +64,6 @@
         }
     </style>
 </head>
-
 <body>
     <div class="quiz-container">
         <h2 id="question"></h2>
@@ -72,76 +75,76 @@
         Score: <span id="score">0</span> / <span id="total">0</span>
     </div>
 
-    <!-- Sound effect for Next Question button -->
-    <audio id="next-sound" src="locked.mp3"></audio>
+
+    <audio id="next-sound" src="theme.mp3"></audio>
 
     <script>
         const questions = [
-            {
+        {
                 
-question:"what is the capital city of nepal?",
-  option:[ "1.kathmandu", "2.sindhupalchok" ,"3.biratnagar", "4.dhangadhi"],
-  correct:0,},
-  {question:"who won the FIFA world cup 2024 ?",
-  option:["1. Argentina", "2. france","3. russia","4. portugal"],
-  correct:0,},
-  {question:" who won t20 cricket world cup 2024  ?",
-  option:[ "1. india ","2. south africa", "3. nepal", "4. pakistan"] ,
-  correct:0,},
-  {question:" who is the author of ythe book muna madan ?",
-  option:[ "1. jhamak kumari ghimire ","2.laxmi prasad devkota ","3. bhanu bhakta acharya", "4. utkrista stha"] ,
-  correct:1,},
-  {question:"what does CPU stand for ?",
-  option:["1.central per unit","2.celntral progess unit", "3.call progess unit","4.central processing unit"],
-  correct:3,},
-  {question:"who is known as the lady with the lamp ?",
-  option: ["1.lady augusta ada","2. gautam buddha ","3. narendra modi", "4. florence nightingale"],
-  correct:3,}, 
-  {question: "when was the first world war began ?",
-  option:["1.june 19 1814", "2.july 28 1914", "3. january 12 1914", "4.november 21 1914"],
-  correct:1,},
-  {question: "what is the smallest prime number ?",
-  option:["1.1", "2.2", "3. 3", "4. 5"],
-  correct:1,} ,
-  {question:"which planet is known as red planet ?",
-  option:["1.mercury","2.venus","3.earth","4.mars"],
-  correct:3,} , 
-  {question:"who is the father of history ?",
-  option:["1.charles babbage ","2.herodotus","3.michael faraday","4.sanduk ruit"],
-  correct:1,},
-  {question:"who wrote the novel 'PRIDE AND PREJUDICE'?",
-  option:["1.emily bronte","2.charles dickens","3.jane austen","4.mark twain"],
-  correct:2,},
-  {question:"what is the chemical symbol for water ?",
-  option:[ "1.h20","2.o2","3.co2","4.h2"],
-  correct:0,},
-  {question:"in which year did world war II end ?",
-  option:["1.1942","2.1945","3.1948","4.1950"],
-  correct:1,},
-  {question:"who discovered gravity?",
-  option:["1.albert einstin","2.galileo galilei ","3.isaac newton","4.nikola teesla "],
-  correct:2,},
-  {question:"which continent is known as dark continent ?",
-  option:["1.africa","2.asia","3.europe","4.north america"],
-  correct:0,},
-  {question:"what is the boiling point of water in sea level ?",
-  option:["1.50&deg;C","2.100&deg;C","3.150&deg;C","4.200&deg;C"],
-  correct:1,},
-  {question:"who painted the ' MONA LISA'?",
-  option:["1.pablo picasso","2.michelalangelo","3.da vinci","4.van gogh "],
-  correct:2,},
-  {question:"what is the largest mammal in the world ? ",
-  option:["1.elephant","2. blue whale ","3.giraffe ","4.shark"],
-  correct:1,},
-  {question:"which planet has the most moons ?",
-  option:["1.earth","2.mars","3.jupiter","4.saturn"],
-  correct:3,},
-  {question:"which element has atomic number 1 ?",
-  option:["1.helium","2.oxygen","3.hydrogen","4.nitrogen"],
-  correct:2,},
-  {question:"which is the largest river in the world ?",
-  option:["1.amazon","2.nile","3.mississippi","4.yangtze"],
-  correct:2}    ,        
+                question:"1. What is the capital city of nepal?",
+                  options:[ "1.Kathmandu", "2.Sindhupalchok" ,"3.Biratnagar", "4.Dhangadhi"],
+                  correct:0,},
+                  {question:"2. Who won the FIFA world cup 2024 ?",
+                  options:["1. Argentina", "2. France","3. Russia","4. Portugal"],
+                  correct:0,},
+                  {question:"3. Who won t20 cricket world cup 2024  ?",
+                  options:[ "1. India ","2. South Africa", "3. Nepal", "4. Pakistan"] ,
+                  correct:0,},
+                  {question:"4. Who is the author of the book muna madan ?",
+                  options:[ "1. Jhamak Kumari Ghimire ","2.Laxmi Prasad Devkota ","3. Bhanu Bhakta Acharya", "4. Utkrista Stha"] ,
+                  correct:1,},
+                  {question:"5. What does CPU stand for ?",
+                  options:["1.Central Per Unit","2.Celntral Progess Unit", "3.Call Progess Unit","4.Central Processing Unit"],
+                  correct:3,},
+                  {question:"6. Who is known as the lady with the lamp ?",
+                  options: ["1.Lady Augusta Ada","2. Gautam Buddha ","3. Narendra Modi", "4. Florence Nightingale"],
+                  correct:3,}, 
+                  {question: "7. When was the first world war began ?",
+                  options:["1.June 19, 1814", "2.July 28, 1914", "3. January 12 ,1914", "4.November 21 ,1914"],
+                  correct:1,},
+                  {question: "8. What is the smallest prime number ?",
+                  options:["1.1", "2.2", "3. 3", "4. 5"],
+                  correct:1,} ,
+                  {question:"9. Which planet is known as red planet ?",
+                  options:["1.Mercury","2.Venus","3.Earth","4.Mars"],
+                  correct:3,} , 
+                  {question:"10. Who is the father of history ?",
+                  options:["1.Charles Babbage ","2.Herodotus","3.Michael Faraday","4.Sanduk Ruit"],
+                  correct:1,},
+                  {question:"11. Who wrote the novel 'PRIDE AND PREJUDICE'?",
+                  options:["1.Emily Bronte","2.Charles Dickens","3.Jane Austen","4.Mark Twain"],
+                  correct:2,},
+                  {question:"12. What is the chemical symbol for water ?",
+                  options:[ "1.h20","2.o2","3.co2","4.h2"],
+                  correct:0,},
+                  {question:"13. In which year did world war II end ?",
+                  options:["1.1942","2.1945","3.1948","4.1950"],
+                  correct:1,},
+                  {question:"14. Who discovered gravity?",
+                  options:["1.Albert Einstin","2.Galileo Galilei ","3.Isaac Newton","4.Nikola Teesla "],
+                  correct:2,},
+                  {question:"15. Which continent is known as dark continent ?",
+                  options:["1.Africa","2.Asia","3.Europe","4.North America"],
+                  correct:0,},
+                  {question:"16. What is the boiling point of water in sea level ?",
+                  options:["1.50&deg;C","2.100&deg;C","3.150&deg;C","4.200&deg;C"],
+                  correct:1,},
+                  {question:"17. Who painted the ' MONA LISA'?",
+                  options:["1.Pablo Picasso","2.Michelalangelo","3.Da Vinci","4.Van Gogh "],
+                  correct:2,},
+                  {question:"18. What is the largest mammal in the world ? ",
+                  options:["1.Elephant","2. Blue Whale ","3.Giraffe ","4.Shark"],
+                  correct:1,},
+                  {question:"19. Which planet has the most moons ?",
+                  options:["1.Earth","2.Mars","3.Jupiter","4.Saturn"],
+                  correct:3,},
+                  {question:"20. Which element has atomic number 1 ?",
+                  options:["1.Helium","2.Oxygen","3.Hydrogen","4.Nitrogen"],
+                  correct:2,},
+                  {question:"21. Which is the largest river in the world ?",
+                  options:["1.Amazon","2.Nile","3.Mississippi","4.Yangtze"],
+                  correct:2}
         ];
 
         let currentQuestion = 0;
@@ -150,8 +153,8 @@ question:"what is the capital city of nepal?",
 
         const questionElement = document.getElementById("question");
         const optionsElement = document.getElementById("options");
-        const nextbutton = document.getElementById("nextBtn");
-        const restartbutton = document.getElementById("restartBtn");
+        const nextButton = document.getElementById("nextBtn");
+        const restartButton = document.getElementById("restartBtn");
         const scoreElement = document.getElementById("score");
         const totalElement = document.getElementById("total");
         const nextSound = document.getElementById("next-sound");
@@ -174,21 +177,59 @@ question:"what is the capital city of nepal?",
                 optionsElement.appendChild(optionDiv);
             });
 
-            nextbutton.disabled = true;
+            nextButton.disabled = true;
             selectedOption = null;
         }
 
         function selectOption(index, element) {
             const options = document.querySelectorAll(".option");
-            options.forEach((option) => option.classList.remove("selected"));
 
-            element.classList.add("selected");
+            options.forEach((option) => option.onclick = null);
 
-            nextbutton.disabled = false;
-            selectedOption = index;
+            if (index === questions[currentQuestion].correct) {
+                element.classList.add("correct");
+                score++;
+                scoreElement.textContent = score;
+            } else {
+                element.classList.add("incorrect");
+
+                options[questions[currentQuestion].correct].classList.add("correct");
+            }
+
+            nextButton.disabled = false;
         }
 
-        
+        nextButton.onclick = () => {
+            nextSound.currentTime = 0; 
+            nextSound.play();
+
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                display();
+            } else {
+                endQuiz();
+            }
+        };
+
+        function endQuiz() {
+            questionElement.textContent = "Quiz Finished";
+            optionsElement.innerHTML = `Final score: ${score} out of ${questions.length}`;
+            nextButton.style.display = "none";
+            restartButton.style.display = "block";
+        }
+
+        restartButton.onclick = () => {
+            resetQuiz();
+        };
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            scoreElement.textContent = score;
+            nextButton.style.display = "block";
+            restartButton.style.display = "none";
+            display();
+        }
 
         display();
     </script>
